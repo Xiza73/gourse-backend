@@ -30,4 +30,8 @@ export class InstitutionService {
   public deleteInstitution = async (id: string) => {
     return await this.institutionDAO.deleteInstitution(id);
   };
+
+  public removeAllInstitutions = async () => {
+    return await this.institutionDAO.removeAllInstitutions();
+  };
 }

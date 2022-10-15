@@ -73,4 +73,12 @@ export class CourseController {
     next(response);
     return;
   };
+
+  public removeAllCourses = async (req: Request, res: Response, next: NextFunction) => {
+    const response = await this.courseService.removeAllCourses();
+
+    if (response.statusCode === 200) return res.status(200).json(response);
+    next(response);
+    return;
+  }
 }

@@ -91,4 +91,13 @@ export class InstitutionDAO {
       return new ErrorHandler(404, "Error al eliminar institución");
     }
   };
+
+  public removeAllInstitutions = async () => {
+    try {
+      const data = await Institution.deleteMany({});
+      return new ResponseData(200, "Instituciones eliminadas correctamente", data);
+    } catch (error) {
+      return new ErrorHandler(404, "Error al eliminar instituciones");
+    }
+  }
 }

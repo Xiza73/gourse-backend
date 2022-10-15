@@ -48,7 +48,7 @@ export class CourseDAO {
         image,
         price,
         currency,
-        start: new Date(start),
+        start,
         duration,
         schedule,
         url
@@ -183,5 +183,14 @@ export class CourseDAO {
       return new ErrorHandler(404, "Error al obtener cursos");
     }
   };
+
+  public removeAllCourses = async () => {
+    try {
+      await Course.deleteMany({});
+      return new ResponseBase(200, "Cursos eliminados correctamente");
+    } catch (error) {
+      return new ErrorHandler(404, "Error al eliminar cursos");
+    }
+  }
 
 }

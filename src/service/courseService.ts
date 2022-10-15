@@ -34,4 +34,8 @@ export class CourseService {
   public readCoursesByInstitutionId = async (institutionId: string) => {
     return await this.courseDAO.readCoursesByInstitutionId(institutionId);
   }
+
+  public removeAllCourses = async () => {
+    return await this.courseDAO.removeAllCourses();
+  }
 }

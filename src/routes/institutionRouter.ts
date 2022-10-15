@@ -19,6 +19,7 @@ export class InstitutionRouter {
     this._router.get('/', this._controller.readInstitutions);
     this._router.get('/all', this._controller.readAllInstitutions);
     this._router.get('/:id', this._controller.readInstitution);
+    this._router.delete('/all', this._controller.removeAllInstitutions);
     this._router.delete('/:id', this._controller.deleteInstitution);
   }
 }

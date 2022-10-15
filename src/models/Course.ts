@@ -49,12 +49,13 @@ const Course = new Schema({
         required: true,
     },
     start: {
-        type: Date,
+        type: String,
         required: true
     },
     duration: {
         type: String,
-        required: false
+        required: false,
+        default: ""
     },
     schedule: {
         type: String,

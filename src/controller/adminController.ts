@@ -8,7 +8,11 @@ export class AdminController {
     this.adminService = new AdminService();
   }
 
-  public getUserProfileId = async (req: Request, res: Response, next: NextFunction) => {
+  public getUserProfileId = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { id } = req.query;
     const response = await this.adminService.getUserProfileId(id);
 
@@ -17,7 +21,11 @@ export class AdminController {
     return;
   };
 
-  public createUser = async (req: Request, res: Response, next: NextFunction) => {
+  public createUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const response = await this.adminService.createUser(req.body);
 
     if (response.statusCode === 200) return res.status(200).json(response);
@@ -25,7 +33,11 @@ export class AdminController {
     return;
   };
 
-  public updateUser = async (req: Request, res: Response, next: NextFunction) => {
+  public updateUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const response = await this.adminService.updateUser(req.body);
 
     if (response.statusCode === 200) return res.status(200).json(response);
@@ -33,7 +45,11 @@ export class AdminController {
     return;
   };
 
-  public deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+  public deleteUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { id } = req.params;
     const response = await this.adminService.deleteUser(id);
 

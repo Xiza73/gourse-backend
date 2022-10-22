@@ -14,10 +14,10 @@ export class RoleRouter {
   }
 
   private _configure(): void {
-    this._router.post('/', this._controller.addRole);
-    this._router.get('/:id', this._controller.getRole);
-    this._router.get('/', this._controller.readRoles);
-    this._router.put('/', this._controller.updateRole);
-    this._router.delete('/', this._controller.deleteRole);
+    this._router.post("/", this._controller.addRole);
+    this._router.get("/:id", this._controller.getRole);
+    this._router.get("/", this._controller.readRoles);
+    this._router.put("/", this._controller.updateRole);
+    this._router.delete("/", this._controller.deleteRole);
   }
 }

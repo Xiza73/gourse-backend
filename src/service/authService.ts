@@ -1,7 +1,7 @@
 import { AuthDAO } from "../dao/authDAO";
 import { transporter } from "../config/mailer";
 import _config from "../config/config";
-import ResponseBase from '../helpers/ResponseBase';
+import ResponseBase from "../helpers/ResponseBase";
 import ErrorHandler from "../helpers/ErrorHandler";
 import ResponseData from "../helpers/ResponseData";
 
@@ -43,10 +43,11 @@ export class AuthService {
         <p>Edutec.com</p>
         `,
       });
-      if(!info.accepted){
+      if (!info.accepted) {
         return new ErrorHandler(400, "Error al enviar correo");
       }
-      response.message += ". Correo enviado con éxito. Por favor revise su bandeja de entrada";
+      response.message +=
+        ". Correo enviado con éxito. Por favor revise su bandeja de entrada";
       return new ResponseBase(200, response.message);
     } catch (error) {
       return new ErrorHandler(400, "Error al enviar correo");

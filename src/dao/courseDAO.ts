@@ -8,33 +8,35 @@ export class CourseDAO {
   constructor() {}
 
   public addCourse = async (body: any) => {
-    const { 
+    const {
       institutionName,
-      name, 
-      description, 
-      image, 
-      price, 
-      currency, 
-      start, 
-      duration, 
-      schedule, 
-      url } = body;
-    
+      name,
+      description,
+      image,
+      price,
+      currency,
+      start,
+      duration,
+      schedule,
+      url,
+    } = body;
+
     try {
       if (!institutionName || !name || !price || !currency || !start || !url) {
         return new ErrorHandler(400, "Faltan datos");
       }
 
-      const institution: (IInstitution & { _id: string; }) | null = await Institution.findOne({
-        name: institutionName
-      }).exec(); 
+      const institution: (IInstitution & { _id: string }) | null =
+        await Institution.findOne({
+          name: institutionName,
+        }).exec();
 
       if (!institution) {
         return new ErrorHandler(400, "No se encontró la institución");
       }
 
-      const course: (ICourse & { _id: string; }) | null = await Course.findOne({
-        name
+      const course: (ICourse & { _id: string }) | null = await Course.findOne({
+        name,
       }).exec();
 
       if (course) {
@@ -51,12 +53,12 @@ export class CourseDAO {
         start,
         duration,
         schedule,
-        url
+        url,
       });
       await newCourse.save();
 
       return new ResponseBase(200, "Curso registrado correctamente");
-    } catch (error) { 
+    } catch (error) {
       console.log(error);
       return new ErrorHandler(400, "Error al registrar curso");
     }
@@ -66,9 +68,16 @@ export class CourseDAO {
     try {
       let data;
       if (name) {
-        data = await Course.find({ name: {$regex: new RegExp(name, 'i')}, status: 1 }).sort([[field, sort]]).exec();
+        data = await Course.find({
+          name: { $regex: new RegExp(name, "i") },
+          status: 1,
+        })
+          .sort([[field, sort]])
+          .exec();
       } else {
-        data = await Course.find({ status: 1 }).sort([[field, sort]]).exec();
+        data = await Course.find({ status: 1 })
+          .sort([[field, sort]])
+          .exec();
       }
       return new ResponseData(200, "Cursos obtenidos correctamente", data);
     } catch (error) {
@@ -80,8 +89,7 @@ export class CourseDAO {
     try {
       const data = await Course.findOne({ _id: id, status: 1 });
 
-      if (!data)
-        return new ErrorHandler(404, "No existe el curso");
+      if (!data) return new ErrorHandler(404, "No existe el curso");
 
       return new ResponseData(200, "Curso obtenido correctamente", data);
     } catch (error) {
@@ -90,34 +98,36 @@ export class CourseDAO {
   };
 
   public updateCourse = async (id: string, body: any) => {
-    const { 
+    const {
       institutionName,
-      name, 
-      description, 
-      image, 
-      price, 
-      currency, 
-      start, 
-      duration, 
-      schedule, 
-      url } = body;
-    
+      name,
+      description,
+      image,
+      price,
+      currency,
+      start,
+      duration,
+      schedule,
+      url,
+    } = body;
+
     try {
       if (!institutionName || !name || !price || !currency || !start || !url) {
         return new ErrorHandler(400, "Faltan datos");
       }
-      
-      const course: (ICourse & { _id: string; }) | null = await Course.findOne({
-        name
+
+      const course: (ICourse & { _id: string }) | null = await Course.findOne({
+        name,
       }).exec();
 
       if (!course) {
         return new ErrorHandler(422, "No se encontró el curso");
       }
 
-      const institution: (IInstitution & { _id: string; }) | null = await Institution.findOne({
-        name: institutionName
-      }).exec(); 
+      const institution: (IInstitution & { _id: string }) | null =
+        await Institution.findOne({
+          name: institutionName,
+        }).exec();
 
       if (!institution) {
         return new ErrorHandler(400, "No se encontró la institución");
@@ -133,14 +143,14 @@ export class CourseDAO {
         start,
         duration,
         schedule,
-        url
+        url,
       });
 
       return new ResponseBase(200, "Curso actualizado correctamente");
-    } catch (error) { 
+    } catch (error) {
       console.log(error);
       return new ErrorHandler(400, "Error al actualizar curso");
-    }    
+    }
   };
 
   public removeCourse = async (id: string) => {
@@ -154,13 +164,13 @@ export class CourseDAO {
 
   public removeCourseByInstitution = async (institutionName: string) => {
     try {
-      const institution = await Institution.findOne({name: institutionName});
+      const institution = await Institution.findOne({ name: institutionName });
 
       if (!institution) {
         return new ErrorHandler(400, "No se encontró la institución");
       }
 
-      await Course.deleteMany({institution});
+      await Course.deleteMany({ institution });
 
       return new ResponseBase(200, "Cursos eliminado correctamente");
     } catch (error) {
@@ -176,7 +186,7 @@ export class CourseDAO {
         return new ErrorHandler(400, "No se encontró la institución");
       }
 
-      const data = await Course.find({institution});
+      const data = await Course.find({ institution });
 
       return new ResponseData(200, "Cursos obtenidos correctamente", data);
     } catch (error) {
@@ -191,6 +201,5 @@ export class CourseDAO {
     } catch (error) {
       return new ErrorHandler(404, "Error al eliminar cursos");
     }
-  }
-
+  };
 }

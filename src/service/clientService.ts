@@ -18,28 +18,28 @@ export class ClientService {
   public updateUserProfile = async (id: string, body: any) => {
     return await this.clientDAO.updateUserProfile(id, body);
   };
-  
+
   public updateUserProfileId = async (body: any) => {
     return await this.clientDAO.updateUserProfileId(body);
   };
-  
+
   public readClient = async (id: string) => {
     return await this.clientDAO.readClient(id);
   };
-  
+
   public readClients = async () => {
     return await this.clientDAO.readClients();
   };
 
   public addFavorite = async (body: any) => {
     return await this.clientDAO.addFavorite(body);
-  }
+  };
 
   public removeFavorite = async (body: any) => {
     return await this.clientDAO.removeFavorite(body);
-  }
+  };
 
   public readFavorites = async (id: string) => {
     return await this.clientDAO.readFavorites(id);
-  }
+  };
 }

@@ -8,7 +8,7 @@ const dbOptions: ConnectOptions = {
 };
 
 mongoose.connect(config.mongodb, dbOptions).then(
-// mongoose.connect('mongodb://localhost:27017/edutec', dbOptions).then(
+  // mongoose.connect('mongodb://localhost:27017/edutec', dbOptions).then(
   () => {
     console.log("Conectado a la base de datos");
   },

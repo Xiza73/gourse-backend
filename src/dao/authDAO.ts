@@ -25,7 +25,7 @@ export class AuthDAO {
       {
         id: user._id,
         personId: user.person._id,
-        role: user.role.description
+        role: user.role.description,
       },
       config.jwtSecret,
       {
@@ -39,31 +39,24 @@ export class AuthDAO {
       const { username, email, password } = request;
 
       let user: (IUser & { _id: any }) | null = null;
-      let person: { _id: any } | null = null; 
+      let person: { _id: any } | null = null;
 
       if (username && password) {
         user = await User.findOne({
           username,
         });
       } else if (email && password) {
-        person = await Client.findOne(
-          { email },
-          { _id: 1 }
-        );
+        person = await Client.findOne({ email }, { _id: 1 });
 
         if (!person) {
-          person = await Admin.findOne(
-            { email },
-            { _id: 1 }
-          );
+          person = await Admin.findOne({ email }, { _id: 1 });
         }
 
         if (person) {
           user = await User.findOne({
             person: person._id,
           }).populate("role");
-        } 
-   
+        }
       } else {
         return new ErrorHandler(400, "Faltan datos");
       }
@@ -133,7 +126,7 @@ export class AuthDAO {
         person: newClient._id,
         role: role._id,
         onPerson: "Client",
-        status: 1
+        status: 1,
       });
       await newUser.save();
 

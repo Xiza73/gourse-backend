@@ -11,7 +11,7 @@ export class UserDAO {
     try {
       let data;
       if (person) {
-        data = await User.find({onPerson: person})
+        data = await User.find({ onPerson: person })
           .populate({
             path: "person",
           })
@@ -84,6 +84,20 @@ export class UserDAO {
     }
   };
 
+  public updatePremium = async (body: any) => {
+    try {
+      const { id } = body;
+      if (!id) return new ErrorHandler(400, "Error al leer la data");
+      const user = await User.findByIdAndUpdate(id, {
+        isPremium: true,
+      });
+      return new ResponseBase(200, "Usuario actualizado correctamente");
+    } catch (error) {
+      console.log(error);
+      return new ErrorHandler(404, "Error al actualizar datos de usuario");
+    }
+  };
+
   public deleteUser = async (id: string) => {
     try {
       if (!id) return new ErrorHandler(400, "Error al leer la data");
@@ -98,17 +112,16 @@ export class UserDAO {
   public updatePassword = async (body: any) => {
     try {
       const { id, password, newPassword } = body;
-      
+
       const user = await User.findById(id);
-      if (!user)
-        return new ErrorHandler(404, "Error obtener datos de usuario");
-        
+      if (!user) return new ErrorHandler(404, "Error obtener datos de usuario");
+
       const match = await user.comparePassword(password);
       if (!match)
-        return new ErrorHandler(400, "La contraseña ingresada no coincide")
+        return new ErrorHandler(400, "La contraseña ingresada no coincide");
 
       const pwd = await encryptPassword(newPassword);
-      await User.findByIdAndUpdate(id, { password: pwd })
+      await User.findByIdAndUpdate(id, { password: pwd });
 
       return new ResponseBase(200, "Contraseña actualizada correctamente");
     } catch (error) {

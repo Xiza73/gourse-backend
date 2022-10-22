@@ -1,6 +1,6 @@
-import { App } from './app'
+import { App } from "./app";
 
-(function(){
-  const app = new App()
-  app.listen()
-})()
+(function () {
+  const app = new App();
+  app.listen();
+})();

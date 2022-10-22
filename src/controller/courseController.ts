@@ -6,10 +6,13 @@ export class CourseController {
 
   constructor() {
     this.courseService = new CourseService();
-
   }
 
-  public addCourse = async (req: Request, res: Response, next: NextFunction) => {
+  public addCourse = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const response = await this.courseService.addCourse(req.body);
 
     if (response.statusCode === 200) return res.status(200).json(response);
@@ -17,19 +20,31 @@ export class CourseController {
     return;
   };
 
-  public readCourses = async (req: Request, res: Response, next: NextFunction) => {
+  public readCourses = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const name = req.query.name as string;
     const field = req.query.field as string | "start";
     const sort = req.query.sort as string | "1";
 
-    const response = await this.courseService.readCourses(name, field, Number(sort));
+    const response = await this.courseService.readCourses(
+      name,
+      field,
+      Number(sort)
+    );
 
     if (response.statusCode === 200) return res.status(200).json(response);
     next(response);
     return;
   };
 
-  public readCourse = async (req: Request, res: Response, next: NextFunction) => {
+  public readCourse = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { id } = req.params;
     const response = await this.courseService.readCourse(id);
 
@@ -38,7 +53,11 @@ export class CourseController {
     return;
   };
 
-  public updateCourse = async (req: Request, res: Response, next: NextFunction) => {
+  public updateCourse = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { id } = req.params;
     const response = await this.courseService.updateCourse(id, req.body);
 
@@ -47,7 +66,11 @@ export class CourseController {
     return;
   };
 
-  public removeCourse = async (req: Request, res: Response, next: NextFunction) => {
+  public removeCourse = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { id } = req.params;
     const response = await this.courseService.removeCourse(id);
 
@@ -56,29 +79,45 @@ export class CourseController {
     return;
   };
 
-  public removeCourseByInstitution = async (req: Request, res: Response, next: NextFunction) => {
+  public removeCourseByInstitution = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { institutionName } = req.params;
-    const response = await this.courseService.removeCourseByInstitution(institutionName);
+    const response = await this.courseService.removeCourseByInstitution(
+      institutionName
+    );
 
     if (response.statusCode === 200) return res.status(200).json(response);
     next(response);
     return;
   };
 
-  public readCoursesByInstitutionId = async (req: Request, res: Response, next: NextFunction) => {
+  public readCoursesByInstitutionId = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { institutionId } = req.params;
-    const response = await this.courseService.readCoursesByInstitutionId(institutionId);
+    const response = await this.courseService.readCoursesByInstitutionId(
+      institutionId
+    );
 
     if (response.statusCode === 200) return res.status(200).json(response);
     next(response);
     return;
   };
 
-  public removeAllCourses = async (req: Request, res: Response, next: NextFunction) => {
+  public removeAllCourses = async (
+    _: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const response = await this.courseService.removeAllCourses();
 
     if (response.statusCode === 200) return res.status(200).json(response);
     next(response);
     return;
-  }
+  };
 }

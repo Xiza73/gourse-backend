@@ -5,7 +5,6 @@ import Admin, { IAdmin } from "../models/Admin";
 import ResponseBase from "../helpers/ResponseBase";
 import Role, { IRole } from "../models/Role";
 
-
 export class AdminDAO {
   constructor() {}
 
@@ -22,7 +21,7 @@ export class AdminDAO {
 
       return new ResponseData(200, "Datos de usuario obtenidos correctamente", {
         username: user.username,
-        email: admin.email
+        email: admin.email,
       });
     } catch (error) {
       return new ErrorHandler(404, "Error al obtener datos de usuario");
@@ -31,9 +30,17 @@ export class AdminDAO {
 
   public createUser = async (request: any) => {
     //register for admins
-    const { username, roleId, password, name, email, description, status } = request;
+    const { username, roleId, password, name, email, description, status } =
+      request;
     try {
-      if (!username || !email || !password || !roleId || !name || (!status && status !== 0))
+      if (
+        !username ||
+        !email ||
+        !password ||
+        !roleId ||
+        !name ||
+        (!status && status !== 0)
+      )
         return new ErrorHandler(400, "Faltan datos");
 
       const user: (IUser & { _id: any }) | null = await User.findOne({
@@ -70,7 +77,7 @@ export class AdminDAO {
         person: newAdmin._id,
         role: role._id,
         onPerson: "Admin",
-        status
+        status,
       });
       await newUser.save();
 
@@ -81,40 +88,56 @@ export class AdminDAO {
   };
 
   public updateUser = async (request: any) => {
-    const { id, username, roleId, newPassword, name, email, description, status } = request;
+    const {
+      id,
+      username,
+      roleId,
+      newPassword,
+      name,
+      email,
+      description,
+      status,
+    } = request;
     try {
       if (!username || !email || !roleId || !name || (!status && status !== 0))
         return new ErrorHandler(400, "Faltan datos");
 
       const user: (IUser & { _id: any }) | null = await User.findById(id);
       if (!user) return new ErrorHandler(422, "No se encontró el usuario");
-      
+
       const role: (IRole & { _id: any }) | null = await Role.findById(roleId);
       if (!role) return new ErrorHandler(400, "No se encontró el rol");
 
-      const admin: (IAdmin & { _id: any }) | null = await Admin.findById(user.person._id);
-      if (!admin) return new ErrorHandler(400, "No se encontró datos del usuario");
+      const admin: (IAdmin & { _id: any }) | null = await Admin.findById(
+        user.person._id
+      );
+      if (!admin)
+        return new ErrorHandler(400, "No se encontró datos del usuario");
 
       const userDb: (IUser & { _id: any }) | null = await User.findOne({
-        username
+        username,
       });
 
       if (userDb && userDb.username !== user.username)
         return new ErrorHandler(422, "El nombre de usuario ya está en uso");
 
       const adminDb: (IAdmin & { _id: any }) | null = await Admin.findOne({
-        email
+        email,
       });
       if (adminDb && adminDb.email !== admin.email)
         return new ErrorHandler(422, "El correo electrónico ya está en uso");
 
-      await Admin.findByIdAndUpdate(user.person._id, {email, name, description});
+      await Admin.findByIdAndUpdate(user.person._id, {
+        email,
+        name,
+        description,
+      });
 
       if (newPassword) {
         const password = await encryptPassword(newPassword);
-        await User.findByIdAndUpdate(id, {username, password, role, status})
+        await User.findByIdAndUpdate(id, { username, password, role, status });
       } else {
-        await User.findByIdAndUpdate(id, {username, role, status})
+        await User.findByIdAndUpdate(id, { username, role, status });
       }
 
       return new ResponseBase(200, "Usuario actualizado correctamente");
@@ -127,7 +150,8 @@ export class AdminDAO {
     try {
       if (!id) return new ErrorHandler(400, "Error al leer la data");
       const user: (IUser & { _id: any }) | null = await User.findById(id);
-      if (!user) return new ErrorHandler(400, "Datos de usuario no encontrados");
+      if (!user)
+        return new ErrorHandler(400, "Datos de usuario no encontrados");
       await Admin.deleteOne({ _id: user.person._id });
       await User.deleteOne({ _id: user._id });
       return new ResponseBase(200, "Usuario eliminado correctamente");

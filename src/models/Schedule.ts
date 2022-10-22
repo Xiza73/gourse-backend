@@ -1,35 +1,40 @@
-import { model, Schema, Document } from 'mongoose'
+import { model, Schema, Document } from "mongoose";
 
 export interface ISchedule extends Document {
-    _id: string,
-    date_start: Date,
-    date_end: Date,
-    day: number[],
-    hour_start: string,
-    hour_end: string,
+  _id: string;
+  date_start: Date;
+  date_end: Date;
+  day: number[];
+  hour_start: string;
+  hour_end: string;
 }
 
-const Schedule = new Schema({
+const Schedule = new Schema(
+  {
     date_start: {
-        type: Date,
-        required: false
+      type: Date,
+      required: false,
     },
     date_end: {
-        type: Date,
-        required: false
+      type: Date,
+      required: false,
     },
-    day: [{
+    day: [
+      {
         type: Number,
-        required: true
-    }],
+        required: true,
+      },
+    ],
     hour_start: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     hour_end: {
-        type: String,
-        required: true
-    }
-}, { timestamps: true });
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
-export default model<ISchedule>('Schedule', Schedule);
+export default model<ISchedule>("Schedule", Schedule);

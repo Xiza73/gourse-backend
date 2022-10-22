@@ -8,7 +8,11 @@ export class InstitutionController {
     this.institutionService = new InstitutionService();
   }
 
-  public addInstitution = async (req: Request, res: Response, next: NextFunction) => {
+  public addInstitution = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const response = await this.institutionService.addInstitution(req.body);
 
     if (response.statusCode === 200) return res.status(200).json(response);
@@ -16,7 +20,11 @@ export class InstitutionController {
     return;
   };
 
-  public updateInstitution = async (req: Request, res: Response, next: NextFunction) => {
+  public updateInstitution = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const response = await this.institutionService.updateInstitution(req.body);
 
     if (response.statusCode === 200) return res.status(200).json(response);
@@ -24,7 +32,11 @@ export class InstitutionController {
     return;
   };
 
-  public readInstitutions = async (req: Request, res: Response, next: NextFunction) => {
+  public readInstitutions = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const name = req.query.name as string;
     const response = await this.institutionService.readInstitutions(name);
 
@@ -33,7 +45,11 @@ export class InstitutionController {
     return;
   };
 
-  public readAllInstitutions = async (req: Request, res: Response, next: NextFunction) => {
+  public readAllInstitutions = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const name = req.query.name as string;
     const response = await this.institutionService.readAllInstitutions(name);
 
@@ -42,7 +58,11 @@ export class InstitutionController {
     return;
   };
 
-  public readInstitution = async (req: Request, res: Response, next: NextFunction) => {
+  public readInstitution = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { id } = req.params;
     const response = await this.institutionService.readInstitution(id);
 
@@ -51,7 +71,11 @@ export class InstitutionController {
     return;
   };
 
-  public deleteInstitution = async (req: Request, res: Response, next: NextFunction) => {
+  public deleteInstitution = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { id } = req.params;
     const response = await this.institutionService.deleteInstitution(id);
 
@@ -60,12 +84,15 @@ export class InstitutionController {
     return;
   };
 
-  public removeAllInstitutions = async (req: Request, res: Response, next: NextFunction) => {
+  public removeAllInstitutions = async (
+    _: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const response = await this.institutionService.removeAllInstitutions();
 
     if (response.statusCode === 200) return res.status(200).json(response);
     next(response);
     return;
   };
-
 }

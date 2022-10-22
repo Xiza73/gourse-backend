@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { PrivateController } from "../controller/privateController";
-import passport from 'passport'
+import passport from "passport";
 
 export class PrivateRouter {
   private readonly _router: Router = Router();
@@ -15,7 +15,11 @@ export class PrivateRouter {
   }
 
   private _configure(): void {
-    this._router.get('/special', passport.authenticate('jwt'/*, { session: false }*/), this._controller.special);
-    this._router.get('/nospecial', this._controller.noSpecial);
+    this._router.get(
+      "/special",
+      passport.authenticate("jwt" /*, { session: false }*/),
+      this._controller.special
+    );
+    this._router.get("/nospecial", this._controller.noSpecial);
   }
 }

@@ -119,4 +119,41 @@ export class ClientController {
     next(response);
     return;
   };
+
+  public addCompleted = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const response = await this.clientService.addCompleted(req.body);
+
+    if (response.statusCode === 200) return res.status(200).json(response);
+    next(response);
+    return;
+  };
+
+  public removeCompleted = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const response = await this.clientService.removeCompleted(req.body);
+
+    if (response.statusCode === 200) return res.status(200).json(response);
+    next(response);
+    return;
+  };
+
+  public readCompleted = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { id } = req.params;
+    const response = await this.clientService.readCompleted(id);
+
+    if (response.statusCode === 200) return res.status(200).json(response);
+    next(response);
+    return;
+  };
 }

@@ -25,5 +25,8 @@ export class ClientRouter {
     this._router.get("/favorites/:id", this._controller.readFavorites);
     this._router.post("/favorites/add", this._controller.addFavorite);
     this._router.post("/favorites/remove", this._controller.removeFavorite);
+    this._router.get("/completed/:id", this._controller.readCompleted);
+    this._router.post("/completed/add", this._controller.addCompleted);
+    this._router.post("/completed/remove", this._controller.removeCompleted);
   }
 }

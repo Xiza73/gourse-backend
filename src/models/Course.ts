@@ -1,20 +1,23 @@
 import { model, Schema, Document } from "mongoose";
 import { IInstitution } from "./Institution";
+import { IComment } from './Comment';
 
 const { ObjectId } = Schema.Types;
 
 export interface ICourse extends Document {
   _id: string;
-  institution: IInstitution;
   name: string;
+  institution: IInstitution;
   description: string;
-  image: string;
   price: number;
   currency: string;
+  schedule: string;
+  image: string;
   start: string;
   duration: string;
-  schedule: string;
   url: string;
+  comments: IComment[];
+  redirects: number;
   score: number;
   votes: number;
   status: number;
@@ -22,22 +25,18 @@ export interface ICourse extends Document {
 
 const Course = new Schema(
   {
-    institution: {
-      type: ObjectId,
-      ref: "Institution",
-      required: true,
-    },
     name: {
       type: String,
       unique: false,
       required: true,
       trim: true,
     },
-    description: {
-      type: String,
-      required: false,
+    institution: {
+      type: ObjectId,
+      ref: "Institution",
+      required: true,
     },
-    image: {
+    description: {
       type: String,
       required: false,
     },
@@ -49,6 +48,14 @@ const Course = new Schema(
       type: String,
       required: true,
     },
+    schedule: {
+      type: String,
+      required: false,
+    },
+    image: {
+      type: String,
+      required: false,
+    },
     start: {
       type: String,
       required: true,
@@ -58,21 +65,30 @@ const Course = new Schema(
       required: false,
       default: "",
     },
-    schedule: {
-      type: String,
-      required: false,
-    },
     url: {
       type: String,
       required: true,
     },
+    comments: [
+      {
+        type: ObjectId,
+        ref: "Comment",
+      },
+    ],
+    redirects: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
     score: {
       type: Number,
-      required: false, //init 0
+      required: false,
+      default: 0,
     },
     votes: {
       type: Number,
-      required: false, //init 0
+      required: false,
+      default: 0,
     },
     status: {
       type: Number,

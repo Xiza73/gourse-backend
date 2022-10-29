@@ -214,4 +214,98 @@ export class ClientDAO {
       return new ErrorHandler(404, "Error al obtener cursos favoritos");
     }
   };
+
+  public addCompleted = async (body: any) => {
+    const { courseUrl, clientId } = body;
+    try {
+      const client: (IClient & { _id: string }) | null = await Client.findById(
+        clientId
+      );
+
+      if (!client) {
+        return new ErrorHandler(422, "El cliente no está registrado");
+      }
+
+      // get user by client id
+      const user: (IUser & { _id: string }) | null = await User.findOne({
+        person: clientId,
+      });
+
+      if (!user) return new ErrorHandler(422, "El usuario no está registrado");
+
+      if (!user.isPremium)
+        return new ErrorHandler(
+          422,
+          "Mejore su plan para acceder a esta funcionalidad"
+        );
+
+      await Client.updateOne(
+        { _id: clientId },
+        {
+          $push: {
+            complete: courseUrl,
+          },
+        }
+      );
+
+      return new ResponseBase(
+        200,
+        "Curso agregado a completados correctamente"
+      );
+    } catch (error) {
+      return new ErrorHandler(404, "Error al agregar curso a completados");
+    }
+  };
+
+  public removeCompleted = async (body: any) => {
+    const { courseUrl, clientId } = body;
+    try {
+      const client: (IClient & { _id: string }) | null = await Client.findById(
+        clientId
+      );
+
+      if (!client) {
+        return new ErrorHandler(422, "El cliente no está registrado");
+      }
+
+      await Client.updateOne(
+        { _id: clientId },
+        {
+          $pull: {
+            complete: courseUrl,
+          },
+        }
+      );
+
+      return new ResponseBase(
+        200,
+        "Curso removido de completados correctamente"
+      );
+    } catch (error) {
+      return new ErrorHandler(404, "Error al remover curso de completados");
+    }
+  };
+
+  public readCompleted = async (id: string) => {
+    try {
+      const client = await Client.findById(id);
+
+      if (!client) {
+        return new ErrorHandler(422, "El cliente no está registrado");
+      }
+
+      const data = await Course.find({
+        url: { $in: client.complete },
+        status: 1,
+      });
+
+      return new ResponseData(
+        200,
+        "Cursos completados obtenidos correctamente",
+        data
+      );
+    } catch (error) {
+      return new ErrorHandler(404, "Error al obtener cursos completados");
+    }
+  };
 }

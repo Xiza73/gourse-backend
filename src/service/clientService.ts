@@ -42,4 +42,16 @@ export class ClientService {
   public readFavorites = async (id: string) => {
     return await this.clientDAO.readFavorites(id);
   };
+
+  public addCompleted = async (body: any) => {
+    return await this.clientDAO.addCompleted(body);
+  };
+
+  public removeCompleted = async (body: any) => {
+    return await this.clientDAO.removeCompleted(body);
+  };
+
+  public readCompleted = async (id: string) => {
+    return await this.clientDAO.readCompleted(id);
+  };
 }

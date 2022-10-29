@@ -1,28 +1,39 @@
-import { model, Schema, Document } from 'mongoose'
+import { model, Schema, Document } from "mongoose";
 
 export interface IClient extends Document {
-    _id: string,
-    email: string,
-    aboutMe: string,
-    favorites: string[],
+  _id: string;
+  email: string;
+  aboutMe: string;
+  favorites: string[];
+  complete: string[];
 }
 
-const Client = new Schema({
+const Client = new Schema(
+  {
     email: {
-        type: String,
-        unique: true,
-        required: true
+      type: String,
+      unique: true,
+      required: true,
     },
-    favorites: [{
-        type: String,
-        required: false
-    }],
     aboutMe: {
+      type: String,
+      unique: false,
+      required: false,
+    },
+    favorites: [
+      {
         type: String,
-        unique: false,
-        required: false
-    }
-}, { timestamps: true });
+        required: false,
+      },
+    ],
+    complete: [
+      {
+        type: String,
+        required: false,
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
-
-export default model<IClient>('Client', Client);
+export default model<IClient>("Client", Client);

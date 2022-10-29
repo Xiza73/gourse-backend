@@ -1,12 +1,13 @@
 import { model, Schema, Document } from "mongoose";
+import { IComment } from "./Comment";
+
+const { ObjectId } = Schema.Types;
 
 export interface IInstitution extends Document {
   _id: string;
   name: string;
   description: string;
   url: string;
-  score: number;
-  votes: number;
   social: {
     facebook: string;
     twitter: string;
@@ -14,6 +15,9 @@ export interface IInstitution extends Document {
   };
   email: string;
   logo: string;
+  comments: IComment[];
+  score: number;
+  votes: number;
   status: number;
 }
 
@@ -32,14 +36,6 @@ const Institution = new Schema(
     url: {
       type: String,
       required: true,
-    },
-    score: {
-      type: Number,
-      required: false, //init 0
-    },
-    votes: {
-      type: Number,
-      required: false, //init 0
     },
     social: {
       facebook: {
@@ -63,6 +59,22 @@ const Institution = new Schema(
     logo: {
       type: String,
       required: false,
+    },
+    comments: [
+      {
+        type: ObjectId,
+        ref: "Comment",
+      },
+    ],
+    score: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    votes: {
+      type: Number,
+      required: false,
+      default: 0,
     },
     status: {
       type: Number,

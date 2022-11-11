@@ -40,7 +40,7 @@ export class AuthService {
         <b>Por favor ingresa al siguiente enlace para continuar con la recuperación de contraseña: </b>
         <p><a href="${_config.clientUrl}/new-password?id=${response.data.id}">Cambiar contraseña</a></p>
         <hr>
-        <p>Edutec.com</p>
+        <p>Gourse.com</p>
         `,
       });
       if (!info.accepted) {

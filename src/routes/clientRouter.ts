@@ -28,5 +28,6 @@ export class ClientRouter {
     this._router.get("/completed/:id", this._controller.readCompleted);
     this._router.post("/completed/add", this._controller.addCompleted);
     this._router.post("/completed/remove", this._controller.removeCompleted);
+    this._router.post("/feedback", this._controller.sendFeedbackMessage);
   }
 }

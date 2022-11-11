@@ -1,4 +1,8 @@
+import { transporter } from "../config/mailer";
 import { ClientDAO } from "../dao/clientDAO";
+import ErrorHandler from "../helpers/ErrorHandler";
+import _config from "../config/config";
+import ResponseBase from "../helpers/ResponseBase";
 
 export class ClientService {
   private clientDAO: ClientDAO;
@@ -53,5 +57,30 @@ export class ClientService {
 
   public readCompleted = async (id: string) => {
     return await this.clientDAO.readCompleted(id);
+  };
+
+  public sendFeedbackMessage = async (body: any) => {
+    try {
+      const { name, email, message } = body;
+      if (!name || !email || !message) {
+        return new ErrorHandler(400, "Campos incompletos");
+      }
+      const info = await transporter.sendMail({
+        from: `"Feedbakc from" <${email}>`,
+        to: `${_config.mailUser}`,
+        subject: "Nuevo mensaje de feedback de " + name,
+        html: `
+        <p>${message}</p>
+        <hr>
+        <p>Gourse.com</p>
+        `,
+      });
+      if (!info.accepted) {
+        return new ErrorHandler(400, "Error al enviar correo");
+      }
+      return new ResponseBase(200, "Mensaje enviado con éxito");
+    } catch (error) {
+      return new ErrorHandler(400, "Error al enviar correo");
+    }
   };
 }

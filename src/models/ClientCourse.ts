@@ -1,37 +1,37 @@
 import { model, Schema, Document } from "mongoose";
-import { ICourse } from './Course';
+import { IUser } from "./User";
 
 const { ObjectId } = Schema.Types;
 
 export interface IClientCourse extends Document {
   _id: string;
-  course: ICourse;
-  isFavorite: boolean;
-  isCompleted: boolean;
+  user: IUser;
+  course: string;
   score: number;
+  comment: string;
 }
 
 const ClientCourse = new Schema(
   {
-    course: {
+    user: {
       type: ObjectId,
-      ref: "Course",
+      ref: "User",
       required: true,
     },
-    isFavorite: {
-      type: Boolean,
+    course: {
+      type: String,
       required: true,
-      default: false,
-    },
-    isCompleted: {
-      type: Boolean,
-      required: true,
-      default: false,
     },
     score: {
       type: Number,
       required: true,
       default: 0,
+      min: 0,
+      max: 5,
+    },
+    comment: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true }

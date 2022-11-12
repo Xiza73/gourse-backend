@@ -38,4 +38,17 @@ export class CourseService {
   public removeAllCourses = async () => {
     return await this.courseDAO.removeAllCourses();
   };
+
+  public scoreCourse = async (
+    idUser: string,
+    idCourse: string,
+    score: number,
+    comment: string
+  ) => {
+    return await this.courseDAO.scoreCourse(idUser, idCourse, score, comment);
+  };
+
+  public readCourseRating = async (idCourse: string) => {
+    return await this.courseDAO.readCourseRating(idCourse);
+  };
 }

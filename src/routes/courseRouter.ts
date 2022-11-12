@@ -14,7 +14,6 @@ export class CourseRouter {
   }
 
   private _configure(): void {
-    this._router.post("/", this._controller.addCourse);
     this._router.get("/", this._controller.readCourses);
     this._router.get("/:id", this._controller.readCourse);
     this._router.put("/:id", this._controller.updateCourse);
@@ -28,5 +27,8 @@ export class CourseRouter {
       "/institution/:institutionId",
       this._controller.readCoursesByInstitutionId
     );
+    this._router.post("/", this._controller.addCourse);
+    this._router.post("/score", this._controller.scoreCourse);
+    this._router.get("/score/:id", this._controller.readCourseRating);
   }
 }

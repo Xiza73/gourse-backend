@@ -1,8 +1,12 @@
 import ErrorHandler from "../helpers/ErrorHandler";
 import ResponseBase from "../helpers/ResponseBase";
 import ResponseData from "../helpers/ResponseData";
+import ClientCourse from "../models/ClientCourse";
 import Course, { ICourse } from "../models/Course";
 import Institution, { IInstitution } from "../models/Institution";
+import User from "../models/User";
+import { IClientCourse } from "../models/ClientCourse";
+import { IUser } from "../models/User";
 
 export class CourseDAO {
   constructor() {}
@@ -200,6 +204,112 @@ export class CourseDAO {
       return new ResponseBase(200, "Cursos eliminados correctamente");
     } catch (error) {
       return new ErrorHandler(404, "Error al eliminar cursos");
+    }
+  };
+
+  public scoreCourse = async (
+    idUser: string,
+    idCourse: string,
+    score: number,
+    comment: string
+  ) => {
+    try {
+      if (
+        !idUser ||
+        !idCourse ||
+        score === undefined ||
+        score === null ||
+        !comment
+      ) {
+        return new ErrorHandler(400, "Faltan datos");
+      }
+      const course = await Course.findById(idCourse);
+
+      if (!course) return new ErrorHandler(400, "No se encontró el curso");
+
+      const courseUrl = course.url;
+
+      const user: (IUser & { _id: any }) | null = await User.findById(idUser);
+
+      if (!user) return new ErrorHandler(400, "No se encontró el usuario");
+
+      let clientCourse: (IClientCourse & { _id: any }) | null =
+        await ClientCourse.findOne({
+          user: user._id,
+          course: courseUrl,
+        });
+
+      if (!clientCourse) {
+        clientCourse = new ClientCourse({
+          user: idUser,
+          course: courseUrl,
+          score,
+          comment,
+        });
+        await clientCourse.save();
+      } else {
+        clientCourse = await ClientCourse.findByIdAndUpdate(
+          clientCourse._id,
+          {
+            score,
+            comment,
+          },
+          { new: true }
+        );
+      }
+
+      return new ResponseBase(200, "Curso calificado correctamente");
+    } catch (error) {
+      return new ErrorHandler(400, "Error al calificar curso");
+    }
+  };
+
+  public readCourseRating = async (idCourse: string) => {
+    try {
+      if (!idCourse) {
+        return new ErrorHandler(400, "Faltan datos");
+      }
+
+      const course = await Course.findById(idCourse);
+
+      if (!course) return new ErrorHandler(400, "No se encontró el curso");
+
+      const courseUrl = course.url;
+
+      const clientCourses: (IClientCourse & { _id: any })[] =
+        await ClientCourse.find({ course: courseUrl });
+
+      const totalScore = clientCourses.reduce(
+        (total, clientCourse) => total + clientCourse.score,
+        0
+      );
+
+      const averageScore = totalScore / clientCourses.length;
+
+      const comments = await Promise.all(
+        clientCourses.map(async (clientCourse) => {
+          const user = await User.findById(clientCourse.user);
+
+          if (!user) return new ErrorHandler(400, "Error al obtener usuarios");
+
+          return {
+            user: user.username,
+            score: clientCourse.score,
+            comment: clientCourse.comment,
+          };
+        })
+      );
+
+      return new ResponseData(
+        200,
+        "Calificación del curso obtenida correctamente",
+        {
+          averageScore,
+          comments,
+        }
+      );
+    } catch (error) {
+      return new ErrorHandler(400, "Error al obtener calificación del curso");
     }
   };
 }

@@ -120,4 +120,35 @@ export class CourseController {
     next(response);
     return;
   };
+
+  public scoreCourse = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { score, idUser, idCourse, comment } = req.body;
+    const response = await this.courseService.scoreCourse(
+      idUser,
+      idCourse,
+      score,
+      comment
+    );
+
+    if (response.statusCode === 200) return res.status(200).json(response);
+    next(response);
+    return;
+  };
+
+  public readCourseRating = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { id } = req.params;
+    const response = await this.courseService.readCourseRating(id);
+
+    if (response.statusCode === 200) return res.status(200).json(response);
+    next(response);
+    return;
+  };
 }

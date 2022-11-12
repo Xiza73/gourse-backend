@@ -8,6 +8,7 @@ import { PrivateRouter } from "./routes/privateRouter";
 import { RoleRouter } from "./routes/roleRouter";
 import { UserRouter } from "./routes/userRouter";
 import { StripeRouter } from "./routes/stripeRouter";
+import { CommentRouter } from "./routes/commentRouter";
 
 export class Routes {
   private readonly _router: Router = Router();
@@ -21,6 +22,7 @@ export class Routes {
   private readonly _userRoute: UserRouter = new UserRouter();
   private readonly _adminRoute: AdminRouter = new AdminRouter();
   private readonly _stripeRouter: StripeRouter = new StripeRouter();
+  private readonly _commentRouter: CommentRouter = new CommentRouter();
 
   constructor() {
     this._configure();
@@ -45,5 +47,6 @@ export class Routes {
     this._router.use("/api/user", this._userRoute.router);
     this._router.use("/api/admin", this._adminRoute.router);
     this._router.use("/api/stripe", this._stripeRouter.router);
+    this._router.use("/api/comment", this._commentRouter.router);
   }
 }

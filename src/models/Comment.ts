@@ -1,21 +1,27 @@
 import { model, Schema, Document } from "mongoose";
-import { IClient } from "./Client";
+import { IUser } from './User';
 
 const { ObjectId } = Schema.Types;
 
 export interface IComment extends Document {
   _id: string;
-  client: IClient;
+  user: IUser;
+  content: string;
+  url: string;
 }
 
 const Comment = new Schema(
   {
-    client: {
+    user: {
       type: ObjectId,
-      ref: "Client",
+      ref: "User",
       required: true,
     },
     content: {
+      type: String,
+      required: true,
+    },
+    url: {
       type: String,
       required: true,
     },

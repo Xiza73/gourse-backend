@@ -95,4 +95,35 @@ export class InstitutionController {
     next(response);
     return;
   };
+
+  public scoreInstitution = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { score, idUser, idInstitution, comment } = req.body;
+    const response = await this.institutionService.scoreInstitution(
+      idUser,
+      idInstitution,
+      score,
+      comment
+    );
+
+    if (response.statusCode === 200) return res.status(200).json(response);
+    next(response);
+    return;
+  };
+
+  public readInstitutionRating = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { id } = req.params;
+    const response = await this.institutionService.readInstitutionRating(id);
+
+    if (response.statusCode === 200) return res.status(200).json(response);
+    next(response);
+    return;
+  };
 }

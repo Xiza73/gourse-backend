@@ -34,4 +34,22 @@ export class InstitutionService {
   public removeAllInstitutions = async () => {
     return await this.institutionDAO.removeAllInstitutions();
   };
+
+  public scoreInstitution = async (
+    idUser: string,
+    idInstitution: string,
+    score: number,
+    comment: string
+  ) => {
+    return await this.institutionDAO.scoreInstitution(
+      idUser,
+      idInstitution,
+      score,
+      comment
+    );
+  };
+
+  public readInstitutionRating = async (idInstitution: string) => {
+    return await this.institutionDAO.readInstitutionRating(idInstitution);
+  };
 }
